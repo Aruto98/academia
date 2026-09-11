@@ -153,6 +153,34 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - Run the narrowest set of tests that covers the change. Pass a file path or `--filter=testName` to `php artisan test --compact`.
 - Rerun a test after each change to it.
-- Run `vendor/bin/phpunit` to call the test runner directly. It accepts the same file path and `--filter=testName` arguments.
+=== academia & loading-board environment rules ===
+
+# Environment & Companion Services
+
+## PHP 8.4 Binary Path (Laragon)
+- Sistem terminal Windows secara default memuat PHP 8.1 (`D:\laragon\bin\php\php-8.1.10...`) yang tidak kompatibel dengan Laravel 13.
+- Selalu gunakan binary PHP 8.4 untuk menjalankan perintah Artisan, Composer, Pint, atau PHP CLI:
+  `& "D:\laragon\bin\php\php-8.4.3-nts-Win32-vs17-x64\php.exe"`
+
+## Architecture & Companion Services (D:\loading-board)
+- Aplikasi Laravel `academia` terhubung dengan ekosistem microservice Go di `D:\loading-board`:
+  - **API Gateway (`D:\loading-board\gateway`):** Berjalan di port `:8080`, dilengkapi `authMiddleware` (memeriksa header `Authorization`).
+  - **Backend (`D:\loading-board\backend`):** Berjalan di port `:9000`, melayani rute API bisnis (seperti `/api/data`).
+- Pemanggilan API dari Laravel dilakukan melalui Gateway: `http://localhost:8080/api/...` dengan Bearer token.
+- Repositori Git:
+  - `d:\laragon\www\academia` (Repo Laravel frontend)
+  - `d:\loading-board` (Repo Go Gateway + Backend)
+
+## Frontend Layout Conventions (Sneat Template)
+- Master layout terletak di `resources/views/layouts/app.blade.php`.
+- Komponen partials:
+  - Sidebar: `resources/views/layouts/partials/sidebar.blade.php`
+  - Navbar: `resources/views/layouts/partials/navbar.blade.php`
+  - Footer: `resources/views/layouts/partials/footer.blade.php`
+- Untuk membuat halaman baru:
+  - Gunakan `@extends('layouts.app')`
+  - Definisikan `@section('title', '...')`
+  - Letakkan konten utama di `@section('content') ... @endsection`
+  - Tambahkan asset script/style khusus halaman menggunakan `@push('scripts')` atau `@push('styles')`.
 
 </laravel-boost-guidelines>
