@@ -183,4 +183,16 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
   - Letakkan konten utama di `@section('content') ... @endsection`
   - Tambahkan asset script/style khusus halaman menggunakan `@push('scripts')` atau `@push('styles')`.
 
+### Sidebar Navigation & Active State Rules
+- **Absolute URLs Only:** Seluruh `href` di `sidebar.blade.php` wajib menggunakan URL absolut (`{{ url('...') }}` atau `{{ route('...') }}`). Jangan pernah menggunakan path relatif agar navigasi dari URL bersarang (misal `/ecommerce/products`) tidak menghasilkan 404.
+- **Leaf Link Authenticity:** Item daun (leaf menu) tidak boleh diubah menjadi `javascript:void(0);` melainkan harus mengarah ke URL halaman atau route yang valid.
+- **Menu Hierarchy & Duplicate Dashboard Shortcuts:**
+  - Halaman dashboard aplikasi (`app-academy-dashboard.html`, `app-ecommerce-dashboard.html`, `app-logistics-dashboard.html`) ada di dua posisi: di container `Dashboards` dan di section aplikasi masing-masing (`APPS & PAGES`).
+  - Sesuai standar Sneat PRO: Halaman aplikasi mengaktifkan menu induknya di bawah `APPS & PAGES` (menjadi tombol ungu solid `class="menu-item active"`), sedangkan `Dashboards` di atas tidak boleh menerima class `active` (hanya `open` biasa).
+  - Dilarang meng-hardcode class `active` pada parent item di `sidebar.blade.php`. Penentuan menu aktif dikelola secara dinamis / server-side dengan memprioritaskan grup aplikasi utama di bawah `APPS & PAGES`.
+- **Sidebar Scroll Persistence:** Pertahankan posisi scroll sidebar vertikal menggunakan `sessionStorage('sneat_menu_scroll_top')` agar posisi menu tidak melompat ke atas saat pengguna berpindah halaman.
+- **Sneat Demo Pages & Mock Data:** 
+  - Template halaman Sneat PRO disimpan di `resources/views/sneat/pages/` dan dilayani secara dinamis oleh `SneatPageController.php`.
+  - Data JSON mock disimpan di `public/sneat/json/`.
+
 </laravel-boost-guidelines>
